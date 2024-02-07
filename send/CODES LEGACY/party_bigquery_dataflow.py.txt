@@ -1,0 +1,56 @@
+import re  
+import apache_beam as beam 
+from apache_beam.io import ReadFromText
+from apache_beam.io import WriteToText
+from apache_beam.io.gcp.bigquery import WriteToBigQuery
+from apache_beam.options.pipeline_options import PipelineOptions
+
+ 
+# Define your pipeline options
+class ParseCsvFn(beam.DoFn):
+    def process(self, element):
+        fields = element.split(',')
+        return[{
+            'party_type_code' : fields[0],
+            'name' : fields[1],
+            'description' : fields[2],
+            'effective_from_date' : fields[3],
+            'effective_to_date' : fields[4],
+        }]
+ 
+ 
+				
+def run(argv=None):
+    pipeline_options = PipelineOptions(
+        argv,
+        runner='DataflowRunner',
+        project='tnt01-odycda-bld-01-1b81',
+        job_name='partyrawload',
+        temp_location='gs://tnt01-odycda-bld-01-stb-eu-rawzone-52fd7181/dataflow/test/temp',
+        staging_location='gs://tnt01-odycda-bld-01-stb-eu-rawzone-52fd7181/dataflow/staging',
+        region='europe-west2', 
+        service_account_email ='svc-dfl-user@tnt01-odycda-bld-01-1b81.iam.gserviceaccount.com',
+        dataflow_kms_key='projects/tnt01-odykms-bld-01-35d7/locations/europe-west2/keyRings/krs-kms-tnt01-euwe2-cdp/cryptoKeys/keyhsm-kms-tnt01-euwe2-cdp',
+        subnetwork='https://www.googleapis.com/compute/v1/projects/tnt01-hst-bld-e88b/regions/europe-west2/subnetworks/odycda-csn-euwe2-kcl-01-bld-01',
+        num_workers = 1,
+        max_num_workers =3,
+        use_public_ips=False,
+    )
+ 
+ 
+# Create the pipeline with the specified options
+    with beam.Pipeline(options=pipeline_options) as pipeline:
+        (pipeline
+        |'Read' >> beam.io.ReadFromText('gs://tnt01-odycda-bld-01-stb-eu-rawzone-52fd7181/INTERNAL/MFVS/MIP/party_type_raw.csv')
+        |'Parse CSV' >> beam.ParDo(ParseCsvFn())
+        |'Write to Big Query' >>WriteToBigQuery(
+            'tnt01-odycda-bld-01-1b81.tnt01_odycda_bqd_euwe2_generalledger.party_type_raw',
+            schema='party_type_code:STRING,name:STRING,description:STRING,effective_from_date:DATE,effective_to_date:DATE',
+            create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+            # Deletes all data in the BigQuery table before writing.
+            write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND 
+        )
+        )
+ 
+if __name__ == '__main__':
+    run()

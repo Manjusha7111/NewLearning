@@ -1,0 +1,26 @@
+from google.cloud import spanner
+import logging
+import sys
+ 
+logging.basicConfig(stream=sys.stdout,level=logging.INFO)
+ 
+instance_id = 'tnt01-odycda-bld-01-euwe2-spn2'
+database_id = 'devdb1'
+project_id = 'tnt01-odycda-bld-01-1b81'
+ 
+def cloudspanner_instance():
+    """Queries data from the database using SQL."""
+    logging.info("starting script execution")
+    spanner_client = spanner.Client(project=project_id)
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql("SELECT CURRENT_DATE")
+        for row in results:
+              print(row)
+    logging.info("script execution completed")
+ 
+if __name__ == '__main__':
+    print('Checking cloud spanner connectivity')
+    cloudspanner_instance()
+# Execute a simple SQL statement

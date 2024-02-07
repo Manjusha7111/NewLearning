@@ -1,0 +1,293 @@
+Instances can be created 2 ways 
+1.compute engine
+2.vetex ai
+
+path-vertex ai-workbench-user managed Notebook-new notebook-create
+
+bigquery-create dataset- either public or own -create
+,create table 
+load data 
+explore-data loarder
+
+
+
+
+data set creation:
+-----------------
+create schema bi_testing
+options(location='asia-south2')
+
+table:
+------
+create table bi_testing.demo
+(
+  year string,
+  name string,
+  phno integer,
+
+)
+OPTIONS(
+  expiration_timestamp=TIMESTAMP "2023-12-12 00:00:00 UTC",
+  description="MY TABLE"
+);
+
+
+
+bq --location=us-central1 mk\
+--dataset \
+--default_table_expiration=3600 \
+--description="My dataset" \
+bfsi-ai-data-usecase-98uh7:BITest1 
+
+
+bq --location=us-east1 mk\
+--dataset \
+--default_table_expiration=3600 \
+--description="My dataset" \
+qwiklabs-gcp-00-2dd738b92b3d:bi_testing1 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL:
+SQL is categorised to the following Sub languages
+1)DDL data definition language:operatins performed over data definition /meta data.
+a)create b)alter c)drop  d)rename
+2)DML data manipulation language :
+a)insert b)update c)delete
+insert into Emp values(1,'A',20);
+3)DRL data retrieval language
+select
+
+*create table Emp(eid number(20),ename varchar(20),age number(20));
+eid    ename    age
+*insert into Emp values(1,'A',20);  insert into Emp values(2,'B',21);  insert into Emp values(3,'C',22);
+eid    ename    age
+1       A        20
+2       B        21
+3       C        22
+*alter table Emp add pho number(20);
+eid    ename    age    pho
+*update Emp set pho=364576566; or update Emp set pho=6622738 where ename='A';
+eid    ename    age     pho
+1       A        20     6622738
+2       B        21     6862947
+3       C        22     6326327
+---------------------------------
+Integrity constraints: Data must be acurate,correct.
+A)key constraints:
+1.unique constraint: no duplicates in column
+2.not null constraint: column should not be null values
+3.primary key constraint: notnull+ unique keys in a coloumn
+B)
+
+Integrity constraints:3 types
+1.key /entity integrity constraints:
+a.primary key:used to identify the rows uniquely no duplicates ,no null values.
+b.candidate key /alternate key:
+ used to identify the records by using more than one key column it allows null values.
+c.composite key:used to uniquely identify records by using two key columns
+d.super key:it is combination of candidate and composite key
+2.Referential/ foreign key:used to establish the relationship between two relations in a database
+3.General/Arbitary : check constraint.
+
+syn:craete table table_name(col1 datatype constraint)
+eg;create table employee (eid number(20) primary key,ename varchar (20) not null,eage number(20) check (eage>25),
+pho number(20) unique not null;
+______________
+*Order of execution:from,where,groupby,having,select,orderby. 
+Groupby:
+eid   ename    sal    dno  
+1      a       10k    10
+2      b       20k    20
+3      c       30k    30
+4      d       30k    40
+eg: select  dno,min(sal) from emp group by dno;
+output:dno min(sal)
+        10   10k
+having:
+eg: select  eid,sal from emp group by dno having (sal)<=20000;
+output:eid min(sal)
+        1   10k
+        2   20k
+
+orderby:
+eg: select  eid,avg(sal) from emp group by dno having sum(sal)>20000  order by sal asc;
+output:dno min(sal)
+        1   10k
+        2   20k
+
+
+______________
+Joins:
+1.Equi :(=)
+
+select * from where tableA  tableB on tableA _col =tableB _col ;
+ 
+Non equi :<>
+
+
+inner:gives matched records from both the tables.
+
+syn:select * from tableA INNER JOIN tableB on tableA _col =tableB _col ;
+
+full outer join:it is opposite to inner join
+sy:select * from table1name full outer join table2name  on table1_col=table2_col;
+Registration           Logins                
+reg_id   name        name    login ID                         
+1	Andrew       xavier    1             
+2	Bob	     Andrew    2  
+3	Charles	     Cad       3
+4	David        Bob       4
+
+result
+
+reg_id   name        name    login ID                         
+1	Andrew       Andrew    2             
+2	Bob	     Bob       4  
+3	Charles	     null      null
+4	David        null      null
+null    null         Xavier     1
+null    null         cad        3
+
+
+
+a)left outer join:It result set of records that are in left table, if there is no match with the right table the results 
+are null
+select * from table1name LEFT OUTER JOIN table2name  on table1_col=table2_col;
+
+Registration           Logins                
+reg_id   name        name    login ID                         
+1	Andrew       xavier    1             
+2	Bob	     Andrew    2  
+3	Charles	     Cad       3
+4	David        Bob       4
+
+result
+
+reg_id   name        name    login ID                         
+1	Andrew       Andrew    2             
+2	Bob	     Bob       4  
+3	Charles	     null      null
+4	David        null      null
+
+
+
+b)right outer join:It result set of records that are in right table, if there is no match with the left table the results 
+are null
+select * from table1name RIGHT OUTER JOIN table2name  on table1_col=table2_col;
+
+Registration           Logins                
+reg_id   name        name    login ID                         
+1	Andrew       xavier    1             
+2	Bob	     Andrew    2  
+3	Charles	     Cad       3
+4	David        Bob       4
+
+result
+
+reg_id   name        name    login ID                         
+1	Andhrew      xavier    1             
+2	Bob	     andhrew   2  
+null	null	     cad       2
+null	null         bob       4
+
+Self JOIN:self join is a query in which a table is joined to itself used for comparing values in a column of rows 
+within the same table
+
+---------
+Sub Queries:
+A query embedded into other query is called as sub query
+syntax:outer query(Inner query)
+the result of inner query is an input to the outer query.
+
+1)Single row sub query:
+ table Sailors
+sid   sname     rating   age
+22    Dustin      7       45
+21    Mary        6       33
+33    dan         8       49
+
+eg: select * from sailors where rating=(select rating from Sailors where sname="Dustin");
+output:
+sid   sname     rating   age
+22    Dustin      7       45
+
+2) multi row sub query: if inner query returns more than one row.
+Q)display sailors  details whose rating is equal to rating of Dustin or rating of dan
+select * from sailors where rating=(select rating from Sailors where sname="Dustin" or sname="dan"); or
+select * from sailors where rating=(select rating from Sailors where sname in("Dustin" ,"dan");
+
+------------------
+VIEWS:Views is a subset of table or virtual table or stored query 
+.views are created for security and to reduce the complexity
+.views called as Virtual Table because it doesn't talk a memory that is a table that doesn't contain really.
+
+syn: create view>view name> as <select stmt>;
+eg:create view v1 as select sname,rating, from Sailors;--- view created.
+select * from v1;
+
+
+----------
+
+
+BIG QUERY: 
+Purpose:Large scale data warehouse that helps you manage and analyze your data with built-in features like 
+machine learning, geospatial analysis, and business intelligence. 
+-It is fully managed serverless data warehouse so it helps us to focus on scalable analysis over petabytes of data.
+-Supports SQLworkbench
+-It provides both  batch and streaming modes to load data.
+-speed (can fetch billions in secs)
+-BQ comes under paas that supports quering using sql.
+
+
+
+
+dataset creation:
+dataset id-location type-region-create dataset
+
+create table:
+create table from-dataset -schema-create table
+
+
+
+
+
+
+
+
+
+
+
+
+bq --location=us-central1 mk\
+--dataset \
+--default_table_expiration=36000 \
+--description="My dataset" \
+bfsi-ai-data-usecase-98uh7:File22
+
+
+bq mk \
+	--table \
+	--expiration 3600 \
+	--description="My table" \
+	GCP_Test:File22 \
+	year:string,name:string,category:string
+
+
+
+

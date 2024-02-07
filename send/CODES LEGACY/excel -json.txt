@@ -1,0 +1,22 @@
+import pandas as pd
+import json
+ 
+# Read excel file
+df = pd.read_excel('/home/balathoti_manjusha/python/file_example_XLSX_10.xlsx')  
+ 
+# Convert dataframe to json
+data = df.to_json(orient='records')
+ 
+# Optional: Pretty print the JSON  
+parsed = json.loads(data)  
+json_data = json.dumps(parsed, indent=4)
+ 
+# Save json file
+with open('file_example_XLSX_10.xlsx.json', 'w') as f:
+    f.write(json_data)
+ 
+print('Excel to JSON conversion complete!')
+print(json_data)
+
+
+openpyxl,xlrd

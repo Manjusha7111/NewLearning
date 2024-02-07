@@ -1,0 +1,106 @@
+#existing data  emp  T
+CREATE TABLE emp (
+  1 INT64,
+  name STRING,
+  salary INT64
+);
+ 
+INSERT INTO emp
+VALUES
+  (1, 'A', 10),
+  (2, 'B', 20);
+
+
+  
+# Input data  as input   -  T
+CREATE TEMP TABLE input_data (
+  id INT64,
+  name STRING,
+  salary INT64
+) AS  
+VALUES
+  (1, 'A', 1),
+  (2, 'B', 2),
+  (3, 'C', 30),
+  (4, 'D', 40);
+
+
+
+_______________________________________
+  
+# Join input and existing data  -  S
+CREATE TEMP TABLE merged AS
+SELECT
+input.id,
+input.name,
+  input.salary,
+emp.name AS existing_name,
+  emp.salary AS existing_salary
+FROM input_data AS input
+FULL OUTER JOIN emp
+ON input.id = emp.id;
+
+
+
+
+ 
+# UPSERT based on comparisons
+MERGE emp T
+USING merged S
+ON T.id = S.id
+WHEN MATCHED AND T.name <> S.name THEN
+UPDATE SET name = S.name
+WHEN MATCHED AND T.salary <> S.salary THEN
+UPDATE SET salary = S.salary
+WHEN NOT MATCHED THEN
+  INSERT (id, name, salary)
+VALUES(S.id, S.name, S.salary);
+  
+SELECT * FROM emp;
+
+
+
+T:
+ (1, 'A', 10),
+  (2, 'B', 20);
+
+S:merged
+Row | id | name | salary
+1   | 1  | A   | 1  
+2   | 2  | B    | 2
+3   | 3  | C    | 30  
+4   | 4  | D    | 40
+
+
+
+______________________________________
+
+
+CREATE TABLE emp (
+    id int,
+    name varchar,
+    salary int
+  
+);
+
+INSERT INTO input_data
+VALUES
+  (1, 'A', 1),
+  (2, 'B', 2),
+  (3, 'C', 30),
+  (4, 'D', 40);
+
+______________________________________________
+
+syntax:
+
+MERGE
+INTO    table
+USING   table
+ON  cond
+WHEN MATCHED THEN
+UPDATE
+SET 
+WHEN NOT MATCHED THEN
+INSERT  (a,b,c)
+VALUES  (1,2,3)

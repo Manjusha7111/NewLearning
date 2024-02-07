@@ -1,0 +1,140 @@
+[
+  {
+    "name": "date",
+    "mode": "NULLABLE",
+    "type": "DATE",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Unique_Key",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Date_Id",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Full_date",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_day",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_Week",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_month",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Week_Full_Week",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Month_Full_Week",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "year_Qtr",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Fiscal_Month",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "FISCAL_YEAR",
+    "mode": "NULLABLE",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "After_hun_yrs",
+    "mode": "NULLABLE",
+    "type": "DATE",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Before_hun_yrs",
+    "mode": "NULLABLE",
+    "type": "DATE",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Yearmonth",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Y_m",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Full_date1",
+    "mode": "NULLABLE",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  }
+]
+
+
+
+
+
+
+
+
+
+
+
+

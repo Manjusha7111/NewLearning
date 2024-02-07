@@ -1,0 +1,269 @@
+avg():returns avg of value for grp of rows
+count()-return stotal num of values
+first()
+
+
+
+
+SELECT  count(Brand) FROM  `bfsi-ai-data-usecase-98uh7.BITest.dealer`;    9
+SELECT  count(distinct Brand) FROM  `bfsi-ai-data-usecase-98uh7.BITest.dealer`;   5     
+SELECT  max(price) FROM  `bfsi-ai-data-usecase-98uh7.BITest.dealer`;       69800
+SELECT  stddev(price) FROM  `bfsi-ai-data-usecase-98uh7.BITest.dealer`;
+SELECT  sum(price) FROM  `bfsi-ai-data-usecase-98uh7.BITest.dealer`;
+
+
+_______________________________________________________________________________________________________________________
+
+WINDOW FUNCTIONS:
+Syn :window_function_name ([arguments]) OVER (
+   [PARTITION BY partition_expression] 
+   [ORDER BY expression ASC | DESC] 
+   [ROWS frame_clause])
+
+
+create table BITest.window
+(
+  Emp_id INTEGER,
+  Emp_name string,
+  Dept_name string,
+  salary integer,
+ 
+);
+
+
+insert into `BITest.window` values
+(101,'Mohan','Admin',4000),(102,'Raj kumar','HR',3000),(103,'Akbar','IT',4000),(104,'Doorvin','Finance',6500),(105,'Rohit','HR',3000),(106,'Rajesh','Finance',5000),(107,'Preet','HR',7000),(108,'Marvam','Admin',4000),(109,'Sanjay','IT',6500),(110,'Vasudha','IT',7000),(111,'Melinda','IT',8000),(112,'Komal','IT',10000),(113,'Gat','Admin',2000),(114,'Manisha','HR',3000),(115,'Chandini','IT',4500),(116,'Satya','Finance',6500),(117,'Aadi','HR',3500),(118,'Teja','Finance',5500),(119,'Cory','HR',8000),(120,'Mona','Admin',5000),
+(121,'Rose','IT',6000),(122,'Ima','IT',8000),(123,'Vikram','IT',8000),(124,'Dheeraj','IT',11000),(125,'Darani','Finance',12000);
+________________________________________________________________________________________________________________
+
+CSV formate:
+Emp_id,name,Dept_name,Salary
+101,'Mohan','Admin',4000
+102,'Raj kumar','HR',3000
+103,'Akbar','IT',4000
+104,'Doorvin','Finance',6500
+105,'Rohit','HR',3000
+106,'Rajesh','Finance',5000
+107,'Preet','HR',7000
+108,'Marvam','Admin',4000
+109,'Sanjay','IT',6500
+110,'Vasudha','IT',7000
+111,'Melinda','IT',8000
+112,'Komal','IT',10000
+113,'Gat','Admin',2000
+114,'Manisha','HR',3000
+115,'Chandini','IT',4500
+116,'Satya','Finance',6500
+117,'Aadi','HR',3500
+118,'Teja','Finance',5500
+119,'Cory','HR',8000
+120,'Mona','Admin',5000
+121,'Rose','IT',6000
+122,'Ima','IT',8000
+123,'Vikram','IT',8000
+124,'Dheeraj','IT',11000
+125,'Darani','Finance',12000
+______________________
+
+select * from BITest.window ;
+Q)Update  `BITest.window` set Dept_name ='HR' where Emp_name ='Rohit';
+
+#max sal:
+Q)select max(salary) as S from BITest.window ;    12000
+
+#max salary from each dep/max sal corresponding each dep::
+Q)select Dept_name, max(salary) as S from `BITest.window`  group by Dept_name;
+
+o/p: S
+HR 8000
+IT 11000
+Admin 5000
+finance 12000
+*******
+
+#using window-last col has same value::
+*over()-specify sql to create window of functions.in below eq :max_sal is created 1 window col for all the records.
+*using over() it treats max() not as aggregate fun but as window fun.over() specifies to craete window of records
+Q)select w.*, max(salary) over() as max_sal  from `BITest.window` w ;
+
+ o/p:                       max_sal
+106 Rajesh Finance 5000   12000
+115 cahndini IT    4500   12000
+109 sanjay   Finance 6500 12000
+
+
+#extarct max salary  each dept using partition:
+Q)select w.*, max(salary) over(partition by Dept_name ) as max_sal from `BITest.window` w ;
+
+o/p:                         max_sal       o/p: max salaries corresponding each dept all fianace ,HR,IT Admin
+106 Rajesh  Finance  5000     12000 ,   112   B   IT   5000  5000
+115 cahndini Fianance 4500   12000 ,    113   C   IT   4000  5000
+109 sanjay   Finance  6500    12000,
+110 M        fiannce  12000   12000
+
+Q:select w.*, avg(salary) over(partition by Dept_name ) as max_sal from `BITest.window` w ;
+Q:select w.*, sum(salary) over(partition by Dept_name ) as max_sal from `BITest.window` w ;
+_________________________________________________________________________________________________________________________
+*row_number: assign unique num to all records
+ __________
+#assign num for all records
+Q)select w.*, row_number() over( ) as r from `BITest.window` w ;
+o/p:r 1 2 3 4 5......
+___________
+assign unique numbers vased on each dept:
+Q)select w.*, row_number() over(partition by Dept_name ) as r from `BITest.window` w ;
+o/p:fiannce 1 2 3 4 5 next IT 1 2 3 4 .......
+_________
+#first 2 empls from each dept to join comp:
+1st sort emp ids in each dept:
+aQ)select w.*, row_number() over(partition by Dept_name order by Emp_id   ) as r from `BITest.window` w ;
+
+o/p: ids got sorted.                     
+106 Rajesh   Finance 5000   
+107 cahndini Finance 4500   
+109 sanjay   Finance 6500 
+
+bQ)select * from 
+(select w.*, row_number() over(partition by Dept_name order by Emp_id ) as r_n 
+from `BITest.window` w)  as first where first.r_n<3;
+
+o/p: we get in sorted order-dept,empid ,it fetches first 2 empls.
+
+___________________________________
+
+rank():
+when we use rank() if it finds duplicates  assign same rank  to all he records.For every dup record it skips a value.
+
+Q:select w.*,
+  rank() over(partition by Dept_name order by salary desc) as rank1
+  from `BITest.window` w
+o/p:we will get salary in desc order from each dept like
+106 Rajesh   Finance 15000   1
+107 cahndini Finance 14500   2  
+109 sanjay   Finance 6500    3
+
+#fetch top 3 emp in each dept earning max sal:
+Q:select * from (
+  select w.*,
+  rank() over(partition by Dept_name order by salary desc) as rank1
+  from `BITest.window` w) as x
+where x.rank1<4;
+
+
+dense_rank():For every dup record it does n't skips a value.
+
+select * from (
+  select w.*,
+  dense_rank() over(partition by Dept_name order by salary desc) as rank1
+  from `BITest.window` w) as x
+where x.rank1<4;
+_________________________________________
+lag():
+ fetch sal of an previous emp:
+select w.*, lag(salary) over(partition by Dept_name order by Emp_id  ) as pre_emp_sal from `BITest.window` w ;
+
+to check 2 records prior:
+select w.*, lag(salary,2) over(partition by Dept_name order by Emp_id  ) as pre_emp_sal from `BITest.window` w ;
+
+
+____________
+lead():
+
+select w.*, lead(salary) over(partition by Dept_name order by Emp_id  ) as next_emp_sal from `BITest.window` w ;
+
+select w.*, lead(salary,2) over(partition by Dept_name order by Emp_id  ) as next_emp_sal from `BITest.window` w ;
+
+_________________
+select w.*, 
+lag(salary) over(partition by Dept_name order by Emp_id  ) as prev_emp_sal,
+case when w.salary>lag(salary) over(partition by Dept_name order by Emp_id  ) 
+then "higher than prev emp"
+else "not higher"
+end
+from `BITest.window` w ;
+
+
+________________________
+create table BITest.window2
+(
+    product_category String(255),
+    brand String(255),
+    product_name String(255),
+    price int
+);
+
+
+___________________________________
+first_name,last,nth():
+
+select *
+,first_value(product_name) over(partition by product_category order by price desc) as most_exp_prod
+from `BITest.window2`;
+
+
+select *,
+last_value(product_name)
+        over(partition by product_category order by price desc
+            range between unbounded preceding and unbounded following) as least_exp_prod
+             from BITest.window2;
+
+#2nd largest element:
+select *,
+nth_value(product_name, 2)
+        over (partition by product_category order by price desc
+             range between unbounded preceding and unbounded following) as second_most_exp_prod
+             from BITest.window2;
+
+
+_____________________________________________________________
+count:
+SELECT count(Emp_id) as countt FROM `bfsi-ai-data-usecase-98uh7.BITestdemo.window` LIMIT 1000;   o/p:23
+
+
+-COUNT(*)= that returns the count of all the rows, COUNT(*) considers duplicate and Null.
+SELECT count(*) FROM `bfsi-ai-data-usecase-98uh7.BITest1.car`   LIMIT 1000  o/p:50
+group by
+SELECT count(Emp_id) as count,Dept_name as a FROM `bfsi-ai-data-usecase-98uh7.BITestdemo.window`  group by Dept_name LIMIT 1000  o/p:5 HR  2 Admin   7 IT
+
+-COUNT with WHERE:
+SELECT count(*) FROM `bfsi-ai-data-usecase-98uh7.BITest1.car` where Manufacturer='Jeep'  LIMIT 1000  
+
+-COUNT() with DISTINCT:removes dups:
+SELECT count( Manufacturer) FROM `bfsi-ai-data-usecase-98uh7.BITest1.car`  LIMIT 1000 =50
+SELECT count(DISTINCT Manufacturer) FROM `bfsi-ai-data-usecase-98uh7.BITest1.car`  LIMIT 1000 =14
+
+-COUNT() with GROUP BY
+SELECT count(*) as count,Manufacturer FROM `bfsi-ai-data-usecase-98uh7.BITest1.car`  group by Manufacturer LIMIT 1000  
+o/p: Jeep 1 ,maruthi 17,BMW 31, chervolet 14.........
+
+-count grup by, having:
+SELECT count(Emp_id) as count,Dept_name as a FROM `bfsi-ai-data-usecase-98uh7.BITestdemo.window`  group by Dept_name  having count>5 LIMIT 1000
+o/p: 7 IT   11 finance
+
+SELECT count(*) as count,Manufacturer FROM `bfsi-ai-data-usecase-98uh7.BITest1.car`  group by Manufacturer having count(*)>5 LIMIT 1000 
+
+maruthi 17,BMW 31, chervolet 14
+
+
+sum
+SELECT sum(Yourvalue) FROM `bfsi-ai-data-usecase-98uh7.BITest1.car` LIMIT 1000 o/p:3389649
+
+SELECT Manufacturer  FROM `bfsi-ai-data-usecase-98uh7.BITest1.car` group by Manufacturer having sum(Yourvalue)>275000  LIMIT 1000     o/p:jeep toyato  xyz
+
+SELECT Manufacturer,rank  FROM `bfsi-ai-data-usecase-98uh7.BITest1.car` group by Manufacturer,rank having sum(Yourvalue)>275000  LIMIT 1000
+
+SELECT Manufacturer,count(rank) as count  FROM `bfsi-ai-data-usecase-98uh7.BITest1.car` group by Manufacturer,rank having sum(Yourvalue)>275000  LIMIT 1000 
+
+
+min(),max(),avg()
+
+
+
+
+
+NOTE:what cols we mentioned in group by we need to mention those at select also 
+_________________________________________________________________________
+
+
+
+

@@ -1,0 +1,235 @@
+update cred file
+dont create dataset and table 
+craete 2 src and dest buckets.
+
+_________________________________________________________________________________________________________________
+
+o/p: python main.py
+#create_bq-
+Created dataset py_dataset
+Created table py_table
+
+#generate_data -uploaded 500 recirds to src brcket  ,in code at last returning filename ,this filname is passing to load_bq as parameter.
+Data generated with 500 records
+File data_20231115122845.csv Uploaded to bkt-dev-src1
+
+#load_bq -500 records loaded into bq table.
+500 rows loaded into py_table.
+
+#extract_bq  -takes the records present bq table 500 records n send those to dest-bucket.
+Data extracted from table /projects/qwiklabs-gcp-02-adc0679f2b4a/datasets/py_dataset/tables/py_table and loaded into GCS bucket gs://bkt-dev-dst1/bqextract_20231115122859.csv.
+
+
+
+
+___________________________________________________________________________________________________
+var.py
+
+project = "qwiklabs-gcp-02-adc0679f2b4a"
+my_dataset = "py_dataset"
+my_table = "py_table"
+src_bucket = "bkt-dev-src1"
+destination_bucket = "bkt-dev-dst1"
+
+
+_________________________________________________________________________________________________________________
+
+
+
+
+main.py
+
+from var import *
+from faker import Faker
+from load_bq import *
+from generate_data import *
+from create_bq import *
+from extract_bq import *
+
+#Service account key file path
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_8d822b920f65/pipeline/cred.json"
+
+create_bq()
+filename = generate_data(500)  # 500 is count of records generated you can give number as you want
+load_bq(filename)
+extract_bq()
+
+
+_________________________________________________________________________________________________________________
+
+
+create_bq.py
+#creating dataset and table at bq.
+
+from google.cloud import bigquery
+import os
+from var import *
+
+#Service account key file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_8d822b920f65/pipeline/cred.json"
+
+def create_bq():
+    client = bigquery.Client()
+
+    dataset_id = my_dataset
+    table_id = my_table
+
+    schema = [
+        bigquery.SchemaField("id", "INTEGER"),
+        bigquery.SchemaField("name", "STRING"),
+        bigquery.SchemaField("email", "STRING"),
+        bigquery.SchemaField("description","STRING"),
+        bigquery.SchemaField("address","STRING"),
+        bigquery.SchemaField("city","STRING"),
+        bigquery.SchemaField("state","STRING"),
+        bigquery.SchemaField("country","STRING"),
+        bigquery.SchemaField("birthdate","DATE"),
+        bigquery.SchemaField("password","STRING"),
+        bigquery.SchemaField("last_login","TIMESTAMP")
+    ]
+
+    table_ref = client.dataset(my_dataset).table(my_table)
+    table = bigquery.Table(table_ref, schema=schema)
+
+    try:
+        dataset = client.create_dataset(my_dataset)
+        print(f"Created dataset {my_dataset}")
+    except:
+        print(f"Dataset {my_dataset} already exists")
+
+    try:
+        table = client.create_table(table)
+        print(f"Created table {table_id}")
+    except:
+        print(f"Table {table_id} already exists")
+
+_________________________________________________________________________________________________________________
+
+
+generate_data.py 
+
+# 
+-install Faker =pip install Faker
+- generate_data(num_rows) eg:500
+
+
+
+from faker import Faker
+from google.cloud import storage
+import csv
+import datetime
+from var import *
+import os
+
+#Service account key file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_8d822b920f65/pipeline/cred.json"
+
+def generate_data(num_rows):
+    fake = Faker()
+    now = datetime.datetime.now()
+    filename = "data_" + now.strftime("%Y%m%d%H%M%S") + ".csv"
+
+
+    with open(filename, 'w', newline='') as csvfile:
+        fieldnames = ['id', 'name', 'email', 'description', 'address', 'city', 'state',
+                      'country', 'birthdate', 'password', 'last_login']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        for i in range(num_rows):
+            writer.writerow(
+                {
+                    'id': fake.random_int(),
+                    'name': fake.name(),
+                    'email': fake.email(),
+                    'description': fake.sentence(),
+                    'address': fake.street_address(),
+                    'city': fake.city(),
+                    'state': fake.state(),
+                    'country': fake.country(),
+                    'birthdate': fake.date(),
+                    'password': fake.password(),
+                    'last_login': fake.date_time()
+                }
+            )
+    print (f"Data generated with {num_rows} records")
+
+    client = storage.Client()       
+    bucket_name = src_bucket
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(filename)
+    blob.upload_from_filename(filename)
+    print(f"File {filename} Uploaded to {bucket_name}")
+    
+    return filename
+
+
+_________________________________________________________________________________________________________________
+
+
+load_bq.py
+
+#this filname is passing to load_bq as parameter-500 records loaded into bq table.
+
+from google.cloud import bigquery
+from google.cloud.bigquery import LoadJobConfig
+import os
+import time
+from var import *
+
+#Service account key file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_8d822b920f65/pipeline/cred.json"
+
+def load_bq(filename):
+    client = bigquery.Client()
+    filename = filename
+    table_ref = client.dataset(my_dataset).table(my_table)
+    job_config = LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.CSV
+    job_config.skip_leading_rows = 1
+    job_config.autodetect = True
+
+    uri = f'gs://{src_bucket}/{filename}'
+    load_job = client.load_table_from_uri(uri, table_ref, job_config=job_config)
+    load_job.result()  
+    time.sleep(10)
+    num_rows = load_job.output_rows
+    print(f"{num_rows} rows loaded into {my_table}.")
+
+
+
+
+_________________________________________________________________________________________________________________
+
+
+extract_bq.py
+
+from google.cloud import bigquery
+from var import *
+import datetime
+import os
+
+#Service account key file path
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_8d822b920f65/pipeline/cred.json"
+
+def extract_bq():
+    client = bigquery.Client()
+    dataset_ref = client.dataset(my_dataset)
+    table_ref = dataset_ref.table(my_table)
+    job_config = bigquery.ExtractJobConfig()
+    job_config.compression = 'GZIP'
+    job_config.field_delimiter = ','
+    job_config.print_header = False
+
+    now = datetime.datetime.now()
+    filename = "bqextract_" + now.strftime("%Y%m%d%H%M%S") + ".csv"
+    destination_uri = f'gs://{destination_bucket}/{filename}'
+
+    extract_job = client.extract_table(table_ref, destination_uri, job_config=job_config)
+
+    extract_job.result()
+
+    print('Data extracted from table {} and loaded into GCS bucket {}.'.format(table_ref.path, destination_uri))
+
+

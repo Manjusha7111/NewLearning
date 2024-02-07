@@ -1,0 +1,94 @@
+first i created dbt_eg project for BITest2
+next i create schema or source.yml:
+
+next using source i got 2 tables into dbt_eg next i can use {{ref}}
+
+____________________________________________________________________________
+example1: source then ref::
+
+source.yml:
+version: 2
+sources:
+  - name: BITestdemo
+    schema: BITestdemo
+    description: "new tables working on DBT"
+    database: bfsi-ai-data-usecase-98uh7
+    tables:
+      - name: jaffle_shop_customers
+      - name: jaffle_shop_orders
+      - name: my_first_dbt_model
+      - name: orders
+      - name: demo
+      - name: Window1
+      - name: window
+
+
+
+orders.sql:
+{{config(materialized='table')}} 
+with source as (
+select * from `bfsi-ai-data-usecase-98uh7.BITestdemo.orders`
+)
+select * from source
+
+
+
+jaffle_shop_orders.sql:
+{{config(materialized='table')}} 
+with source as (
+select * from `bfsi-ai-data-usecase-98uh7.BITestdemo.jaffle_shop_orders`
+)
+select * from source
+
+
+join.sql:
+{{config(materialized='table')}}
+with source as (
+select o.id,js.status,o.order_date
+from {{ref('orders')}} as o
+inner join  {{ref('jaffle_shop_orders')}} as js
+on o.user_id=js.user_id
+)
+select * from source
+
+________________________________________________________________________
+
+example 2:only source:::
+
+join1.sql:
+
+{{config(materialized='table')}}
+with source as (
+select o.id,js.status,o.order_date
+from `bfsi-ai-data-usecase-98uh7.BITestdemo.orders` as o
+inner join  `bfsi-ai-data-usecase-98uh7.BITestdemo.jaffle_shop_orders` as js
+on o.user_id=js.user_id
+)
+select * from source
+
+
+
+{{config(materialized='table')}}
+with source as (
+select c.id,jc.id,c.first_name
+from `bfsi-ai-data-usecase-98uh7.BITestdemo.customers` as c
+inner join  `bfsi-ai-data-usecase-98uh7.BITestdemo.jaffle_shop_customers` as jc
+on c.id=jc.id
+)
+select * from source
+________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+modetest -BiDimension:US
+
+
+
+

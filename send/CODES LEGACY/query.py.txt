@@ -1,0 +1,24 @@
+# Initialize GCS and BigQuery clients
+#from google.cloud import bigquery
+ 
+#table_id = "tnt01-odycda-bld-01-1b81.tnt01_odycda_bqd_euwe2_cdm.party_type_raw"
+ 
+from google.cloud import bigquery
+ 
+def get_table_row_count(project_id, dataset_id, table_id):
+    # Initialize the BigQuery client
+    client = bigquery.Client(project=project_id)
+    # Construct the table reference
+    table_ref = bigquery.dataset.DatasetReference(project_id, dataset_id).table(table_id)
+    # Get the table
+    table = client.get_table(table_ref)
+    # Print the number of rows in the table
+    print(f"Number of rows in table {table_id}: {table.num_rows}")
+ 
+# Replace with your actual project, dataset, and table IDs
+project_id = "tnt01-odycda-bld-01-1b81"
+dataset_id = "tnt01_odycda_bqd_euwe2_cdm"
+table_id = "party_type_raw"
+ 
+# Call the function
+get_table_row_count(project_id, dataset_id, table_id)

@@ -1,0 +1,122 @@
+import apache_beam as beam
+import re #import regular exp for string manipulations
+
+#its custom class that inherits beam.dofn --defines data cleaning logic. 
+class CleanText(beam.DoFn):
+    #process method -actual data cleaning logic
+    def process(self, element):
+        # Clean the text by removing special characters and converting to lowercase
+        cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', element).lower()
+        yield cleaned_text
+ 
+def run_data_cleaning_pipeline(input_data, output_path):
+    # Create a Pipeline using the DirectRunner (for local execution)
+    with beam.Pipeline() as p:
+        # Read input data from a text file
+        input_collection = p | beam.io.ReadFromText(input_data)
+ 
+        # Apply the CleanText transform
+        cleaned_data = input_collection | beam.ParDo(CleanText())
+ 
+        # Write the cleaned data to an output file
+        cleaned_data | beam.io.WriteToText(output_path)
+ 
+# Example usage
+input_file = '/home/balathoti_manjusha/python/apache/eq2/input_data.txt'
+output_path = '/home/balathoti_manjusha/python/apache/eq2/cleaned_output'
+run_data_cleaning_pipeline(input_file, output_path)
+
+
+_________________________________________
+input_file:
+
+Hello, this is a sample sentence with special characters! How's it going?
+Another sentence for data cleaning example: 1234 Special Data!
+Let's clean this one too.
+
+output_path:
+hello this is a sample sentence with special characters hows it going
+another sentence for data cleaning example 1234 special data
+lets clean this one too
+______________________________________________
+
+import re #import regular exp for string manipulations
+
+#its custom class that inherits beam.dofn --defines data cleaning logic. 
+class CleanText(beam.DoFn):
+
+
+#process method -actual data cleaning logic,It takes an element as input, which represents a single element in the input PCollection. 
+def process(self, element):
+
+
+
+ # Clean the text by removing special characters and converting to lowercase
+        cleaned_text = re.sub(r'[^a-zA-Z0-9\s]', '', element).lower()
+
+
+#The yield statement is used because this process method is expected to return an iterable of processed elements
+ yield cleaned_text
+
+
+with beam.Pipeline() as p:
+#This line creates an Apache Beam pipeline named p using the DirectRunner. The 'with' statement ensures that resources are properly cleaned up after the pipeline execution.
+
+
+#options = PipelineOptions(): Initializes pipeline options.
+#with beam.Pipeline(options=options) as p:: Creates a context for the pipeline
+with beam.Pipeline() as p:
+
+
+
+input_collection = p | beam.io.ReadFromText(input_data)
+cleaned_data = input_collection | beam.ParDo(CleanText())
+ #This line applies the CleanText transform to the input_collection. CleanText is assumed to be a custom DoFn that defines the cleaning logic. The resulting cleaned data is stored in the 'cleaned_data' PCollection
+
+
+
+# Applies the CleanData transform to each element in the PCollection.
+beam.ParDo(CleanData())
+
+_______________________________________________________________________________________________
+
+
+eq2 :
+
+import re
+import apache_beam as beam
+from apache_beam.options.pipeline_options import PipelineOptions
+ 
+class CleanData(beam.DoFn):
+    def process(self, element):
+        text = element.strip()
+        # Remove special characters and digits
+        cleaned_text = re.sub(r'[^A-Za-z\s]', '', text)
+        yield cleaned_text
+ 
+def run_pipeline(input_text, output_path):
+    options = PipelineOptions()
+    with beam.Pipeline(options=options) as p:
+        cleaned_data = (
+            p
+            | 'ReadInputText' >> beam.Create([input_text])
+            | 'CleanData' >> beam.ParDo(CleanData())
+| 'WriteCleanedData' >> beam.io.WriteToText(output_path)
+        )
+ 
+if __name__ == '__main__':
+    input_text = "Hello This is the sample sentence with special characters how it is going on a sentence for data cleaning example 1234 special data let's clean this one too"
+    output_path = '/home/balathoti_manjusha/python/apache/eq2/cleaned_output1'
+    run_pipeline(input_text, output_path)
+
+
+
+o/p:cleaned_output1
+Hello This is the sample sentence with special characters how it is going on a sentence for data cleaning example  special data lets clean this one too
+
+_________________________________________________________________________________
+
+Hi francis 
+
+I would like to take a planned leave on january for one week because my sister having her delivery at 1st or 2nd week of jan.
+Dates were not decided but priorly im mentioning

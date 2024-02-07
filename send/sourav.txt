@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Full_date",
+    "mode": "",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_day",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_Week",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year_month",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Year",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Week_Full_Week",
+    "mode": "",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Month_Full_Week",
+    "mode": "",
+    "type": "STRING",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "year_Qtr",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Fiscal_Month",
+    "mode": "",
+    "type": "INTEGER",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "After_hun_yrs",
+    "mode": "",
+    "type": "DATE",
+    "description": null,
+    "fields": []
+  },
+  {
+    "name": "Before_hun_yrs",
+    "mode": "",
+    "type": "DATE",
+    "description": null,
+    "fields": []
+  }
+]

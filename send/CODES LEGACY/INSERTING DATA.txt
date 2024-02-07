@@ -1,0 +1,21 @@
+# Initialize GCS and BigQuery clients
+from google.cloud import bigquery
+ 
+table_id = "tnt01-odycda-bld-01-1b81.tnt01_odycda_bqd_euwe2_cdm.party_type_raw"
+ 
+# Construct a BigQuery client object.
+client = bigquery.Client()
+print(f"table_id Name: {table_id}")
+ 
+ 
+rows_to_insert = [
+        {"party_type_code": "ptc01", "name": 'ind'},
+        {"party_type_code": "ptc2", "name": 'org'},
+    ]
+ 
+errors = client.insert_rows_json(table_id, rows_to_insert)  # Make an API request.
+if errors == []:
+    print("New rows have been added.")
+else:
+    print("Encountered errors while inserting rows: {}".format(errors))
+    # [END bigquery_table_insert_rows]

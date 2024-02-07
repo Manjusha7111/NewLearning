@@ -1,0 +1,55 @@
+creation of bucket: names dont rep
+
+from google.cloud import storage
+import os
+ 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_52f3d7aafb50/cred.json"
+ 
+project_id = 'qwiklabs-gcp-00-77c542b8a12b'
+bucket_name = 'bucket-dev-1111'
+ 
+storage_client = storage.Client()
+bucket = storage_client.bucket(bucket_name)
+bucket.location = 'us-central1'
+bucket.create(project=project_id)
+print(f'Bucket {bucket_name} created.')
+ 
+_______
+ print(f'Bucket {bucket_name} inside bucket data  created.')
+Bucket bucket-dev-1111 inside bucket data created.
+
+_______________________________________________________
+adding files inside bucket
+
+
+from google.cloud import storage
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_52f3d7aafb50/cred.json"
+project_id = 'qwiklabs-gcp-00-77c542b8a12b'
+bucket_name = 'bucket-dev-1111'
+storage_client = storage.Client()
+bucket = storage_client.bucket(bucket_name)
+blob = bucket.blob("/home/student_03_52f3d7aafb50/c.py")
+with open('/home/student_03_52f3d7aafb50/c.py', 'rb') as file:
+    blob.upload_from_file(file)
+print(f'Bucket {bucket_name} inside bucket data  created.')
+
+__________________________________________________________
+
+deleting files inside bucket:
+
+from google.cloud import storage
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/student_03_52f3d7aafb50/cred.json"
+project_id = 'qwiklabs-gcp-00-77c542b8a12b'
+bucket_name = 'bucket-dev-1111'
+storage_client = storage.Client()
+bucket = storage_client.bucket(bucket_name)
+blob = bucket.blob("/home/student_03_52f3d7aafb50/c.py")
+blob.delete()
+print('deleted')
+
+______________________________________________________
+
+
+

@@ -1,0 +1,512 @@
+[
+    {
+        "name": "Customer_Id",
+        "mode": "REQUIRED",
+        "type": "INTEGER"
+    },
+    {
+        "name": "Customer_Solifi_Id",
+        "mode": "REQUIRED",
+        "type": "STRING"
+    },
+    {
+        "name": "Customer_Name",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CUSTOMER_TYPE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CUSTOMER_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CUSTOMER_STATUS_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Gender_Type_Code",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "GENDER_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Occupation",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "OCCUPATION_CODE",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "Employer",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "EMPLOYMENT_STATUS",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "MARITAL_STATUS",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "MARITAL_STATUS_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "STAFF_INDICATOR",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "STAFF_TYPE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "STAFF_TYPE_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Birth_Date",
+        "mode": "NULLABLE",
+        "type": "TIMESTAMP"
+    },
+    {
+        "name": "EDUCATION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PROFESSION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "ANNUAL_INCOME",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "DRIVERS_LICENCE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "SOCIAL_SECURITY_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "SOCIAL_INSURANCE_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "TAX_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "MOTABILITY_FLAG",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "NUMBER_OF_DEPENDANTS",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COUNTY",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "LOCALITY",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COUNTRY_OF_BIRTH",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "COUNTRY_OF_BIRTH_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Birth_Place_Region_Code",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COUNTRY_OF_NATIONALITY",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "COUNTRY_OF_NATIONALITY_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COUNTRY_OF_RESIDENCE",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "COUNTRY_OF_RESIDENCE_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "RESIDENTIAL_STATUS",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "STREET_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BUILDING_NAME",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BUILDING_NUM",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "SUB_BUILDING_NUM",
+        "mode": "NULLABLE",
+        "type": "\nSTRING"
+    },
+    {
+        "name": "STREET_NAME",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "STREET_TYPE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CITY_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "POST_TOWN",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "POST_CODE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Is_Invalid_Address_Indicator",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PRIVACY_CONSENT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "DECEASED",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "DECEASED_CONFIRMED",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "DECEASED_FLAG",
+        "mode": "NULLABLE",
+        "type": "\nINTEGER"
+    },
+    {
+        "name": "Death_Date",
+        "mode": "NULLABLE",
+        "type": "TIMESTAMP"
+    },
+    {
+        "name": "CEASE_DESIST",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "POLITIC_EXPOSED_IND",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "TRADING_NAME",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "ACCOUNT_CONTACT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CONTACT_PERSON",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PAYMENT_CONTACT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PAYMENT_BLOCK",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PAYMENT_LOCK_FLAG",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "INDUSTRY_CODE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "INDUSTRY_SUB_CODE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BUSINESS_SECTOR",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "NATURE_OF_BUSINESS",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BUSINESS_ID_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "TRADING_KEY",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "VAT_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "VAT_ID",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "REGISTRATION_NUMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BASEL_CLASS_CODE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BASEL_CLASS_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CORPORATION",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "INCORPORATION_TIMESTAMP",
+        "mode": "NULLABLE",
+        "type": "TIMESTAMP"
+    },
+    {
+        "name": "KYC_DIRCTOR_BOARD_MEMBER",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "KYC_COUNTRY_OF_OPERATION",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "GST_EXEMPT_FLAG",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "GROUP_CONSOLIDATION_CODE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "ICON_GROUP",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "DOCUMENT_DELIVERY_METHOD",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "DOCUMENT_DELIVERY_METHOD_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "LITERATURE_CONSENT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "INSOLVENCY",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "BANKRUPCY_NOTIFIED",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "CREDIT_LIMIT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "FID_EXEMPT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "ORIGIN_TYPE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Communication_Effective from date",
+        "mode": "NULLABLE",
+        "type": "TIMESTAMP"
+    },
+    {
+        "name": "Communication_Effective to date",
+        "mode": "NULLABLE",
+        "type": "TIMESTAMP"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "Channel_Type_Code",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_TYPE",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_PRIMARY",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL_Email",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL_Phone Number",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL_Fax number",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL_SMS",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "COMMUNICATION_DETAIL1_Mobile",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "SMS_CONSENT",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CONSENT_FLAG",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "PROVINCE_DESCRIPTION",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "CARE_OF",
+        "mode": "NULLABLE",
+        "type": "STRING"
+    },
+    {
+        "name": "IS_PRIMARY_MAILING",
+        "mode": "NULLABLE",
+        "type": "INTEGER"
+    }
+]

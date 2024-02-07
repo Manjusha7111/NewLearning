@@ -1,0 +1,68 @@
+import csv
+from collections import defaultdict
+from google.cloud import bigquery
+import os
+from datetime import datetime
+#from google.oauth2 import service_account
+import json
+import pandas as pd
+# credentials = service_account.Credentials.from_service_account_file('/content/xyz.json')
+ 
+# # Load the configuration
+# with open('config.json', 'r') as file:
+#     config = json.load(file)
+ 
+ 
+# Use the configuration in the script
+project_id = 'tnt01-odycda-bld-01-1b81'
+dataset_id='tnt01_odycda_bqd_euwe2_cdm'
+ 
+ 
+#service_account_name = config['service_account_name']
+#input_file = config['input_file']
+#credentials = service_account.Credentials.from_service_account_file(credentials_path)
+ 
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account_name
+ 
+client = bigquery.Client(project=project_id)
+print("connection success")
+ 
+# Ensure the dataset exists; if not, create it
+dataset_ref = client.dataset(dataset_id)
+try:
+    client.get_dataset(dataset_ref)
+except Exception as e:
+    dataset = bigquery.Dataset(dataset_ref)
+    client.create_dataset(dataset)
+    print(f"Dataset {dataset_id} created.")
+ 
+ 
+def str_to_date(str):
+    return datetime.strptime(str, '%Y-%m-%d').date()
+ 
+ 
+data = [{'party_type_code':'PT001','name' :'Individual','description':'Individual','effective_from_date':str_to_date('2020-01-01'),'effective_to_date':str_to_date('9999-01-01')},
+        {'party_type_code':'PT002','name' :'Organization','description':'Organization','effective_from_date':str_to_date('2020-01-01'),'effective_to_date':str_to_date('9999-01-01')} 
+        ]
+df = pd.DataFrame(data)
+# print(df)
+bigqueryClient = bigquery.Client()
+tableRef = bigqueryClient.dataset("tnt01_odycda_bqd_euwe2_cdm").table("party_type_raw")
+bigqueryJob = bigqueryClient.load_table_from_dataframe(df, tableRef)
+bigqueryJob.result()
+print(f"Loaded data from into {dataset_id}")
+ 
+ 
+query = """
+    SELECT party_type_code AS party_type_code, name AS name
+    FROM `tnt01-odycda-bld-01-1b81.tnt01_odycda_bqd_euwe2_cdm.party_type_raw` LIMIT 1000
+"""
+ 
+results = bigqueryClient.query(query)
+ 
+for row in results:
+    party_type_code = row['party_type_code']
+    name = row['name']
+    print(f'{party_type_code} | {name}')
+ 
+print("data retrived succcessfully from party_type_raw")

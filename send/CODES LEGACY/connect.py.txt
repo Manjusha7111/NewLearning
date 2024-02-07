@@ -1,0 +1,19 @@
+from google.cloud import bigquery
+from google.api_core.exceptions import GoogleAPIError
+ 
+def test_bigquery_connectivity():
+    try:
+        project_id = 'tnt01-odycda-bld-01-1b81'
+        client = bigquery.Client(project=project_id)
+        # List datasets in your project
+        datasets = list(client.list_datasets())
+        print("Connected successfully to BigQuery!")
+        print("Datasets in your project:")
+        for dataset in datasets:
+            print(dataset.dataset_id)
+    except GoogleAPIError as e:
+        print(f"Failed to connect to BigQuery. Error: {e.message}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+ 
+test_bigquery_connectivity()

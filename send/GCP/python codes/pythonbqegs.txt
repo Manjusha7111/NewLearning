@@ -1,0 +1,247 @@
+dataset:
+
+from google.cloud import bigquery
+# Construct a BigQuery client object.
+client = bigquery.Client()
+# Set dataset_id to the name of the dataset
+dataset_id = "bfsi-ai-data-usecase-98uh7.BITest1"
+dataset = bigquery.Dataset(dataset_id)
+# Location must match that of the base dataset.
+dataset.location = "US"
+# Send the dataset to the API for creation.
+
+# Raises google.api_core.exceptions.Conflict if the Dataset already
+# exists within the project.
+dataset = client.create_dataset(dataset)
+print("Created dataset {}.{}".format(client.project, dataset.dataset_id))
+_________________________
+
+
+
+table:
+
+
+from google.cloud import bigquery
+
+
+# Construct a BigQuery client object.
+
+client = bigquery.Client()
+
+
+# Set table_id to the ID of the table to create.
+
+table_id = "bfsi-ai-data-usecase-98uh7.BITest1.demo1"
+
+
+
+schema = [
+
+    bigquery.SchemaField("name", "STRING"),
+
+    bigquery.SchemaField("age", "INTEGER"),
+
+]
+
+
+table = bigquery.Table(table_id, schema=schema)
+
+
+table = client.create_table(table)
+
+
+print("Created table {}.{}".format(
+    table.project, table.dataset_id, table.table_id))
+
+_________________________________
+
+load data into table:
+
+
+
+from google.cloud import bigquery
+
+table_id = "bfsi-ai-data-usecase-98uh7.BITest1.demo1"
+client = bigquery.Client()
+rows_to_insert = [
+
+    {'name': 'John', 'age': 30},
+
+    {'name': 'Jane', 'age': 25},
+
+]
+errors = client.insert_rows_json(table_id, rows_to_insert)
+if errors == []:
+
+    print("Loaded rows successfully")
+
+else:
+
+    print("Errors: ", errors)
+
+______________________________________________________
+                                 *CODES*
+
+#slect without file:
+
+from google.cloud import bigquery
+client=bigquery.Client(project="qwiklabs-gcp-03-a688fdcac3ef")
+q="SELECT * FROM `qwiklabs-gcp-03-a688fdcac3ef.BITest1.demo1` LIMIT 10 "
+query_job=client.query(q)
+res=query_job.result()
+for i in res:
+    print(i)
+
+
+________________________________
+
+
+#taking sql from file:
+
+from google.cloud import bigquery
+ 
+# Initialize a client
+client = bigquery.Client()
+ 
+# Define your project, dataset, and table names
+project_id = 'qwiklabs-gcp-03-a688fdcac3ef'
+dataset_id = 'BITest1'
+table_id = 'demo1'
+ 
+# Define the path to your SQL query file
+query_file_path = '/home/student_03_0377b50d0c22/my_query.sql'
+ 
+# Read the SQL query from the file
+with open(query_file_path, 'r') as query_file:
+    query = query_file.read()
+ 
+# Construct the SQL query
+query = query.format(project_id=project_id, dataset_id=dataset_id, table_id=table_id)
+ 
+# Execute the query
+query_job = client.query(query)
+ 
+# Fetch the results
+results = query_job.result()
+ 
+# Process the results as needed
+for row in results:
+    print(row)
+
+__________________________________________
+
+
+my_query.sql:
+
+SELECT name as n,age as a FROM `qwiklabs-gcp-03-a688fdcac3ef.BITest1.demo1` LIMIT 10;
+
+_____________________________________
+
+sending output to other table:
+
+
+from google.cloud import bigquery
+ 
+# Initialize a client
+client = bigquery.Client()
+ 
+# Define your project, dataset, and table names
+project_id = 'qwiklabs-gcp-03-a688fdcac3ef'
+dataset_id = 'BITest1'
+table_id = 'demo1'
+ 
+# Define the path to your SQL query file
+query_file_path = '/home/student_03_0377b50d0c22/my_query.sql'
+ 
+# Read the SQL query from the file
+with open(query_file_path, 'r') as query_file:
+    query = query_file.read()
+ 
+# Construct the SQL query
+query = query.format(project_id=project_id, dataset_id=dataset_id, table_id=table_id)
+job_config = bigquery.QueryJobConfig(
+    destination="qwiklabs-gcp-03-a688fdcac3ef.BITest1.demo2", write_disposition='WRITE_TRUNCATE')
+
+query_job = client.query(query, job_config=job_config)
+query_job.result()  # Waits for job to complete
+print('Query results loaded back into mydataset.mytable')
+
+____________________________________________
+           EXAMPLES OF DATE IN GCP*
+org data is not loaded,
+
+
+from google.cloud import bigquery
+ 
+# Initialize a client
+client = bigquery.Client()
+ 
+# Define your project, dataset, and table names
+project_id = 'bfsi-ai-data-usecase-98uh7'
+dataset_id = 'BITest1'
+table_id = 'BITest1.rough'
+ 
+# Define the path to your SQL query file
+query_file_path = '/home/balathoti_manjusha/python/my_query.sql'
+ 
+# Read the SQL query from the file
+with open(query_file_path, 'r') as query_file:
+    query = query_file.read()
+ 
+# Construct the SQL query
+query = query.format(project_id=project_id, dataset_id=dataset_id, table_id=table_id)
+job_config = bigquery.QueryJobConfig(
+    destination="bfsi-ai-data-usecase-98uh7.BITest1.newdemo2", write_disposition='WRITE_TRUNCATE')
+
+query_job = client.query(query, job_config=job_config)
+query_job.result()  # Waits for job to complete
+print('Query results loaded back into mydataset.mytable')
+
+
+______________
+
+QUERY:
+
+SELECT Full_date as a,Year_day as b FROM `bfsi-ai-data-usecase-98uh7.BITest1.rough` LIMIT 1000;
+
+
+SELECT
+  date,
+  GENERATE_UUID() AS Unique_Key,
+  ROW_NUMBER() OVER() AS Date_Id,
+  FORMAT_DATE("%Y/%B/%d",date) AS Full_date,
+  EXTRACT(DAY FROM date) AS Year_day,
+  EXTRACT(WEEK FROM date) AS Year_Week,
+  EXTRACT(MONTH FROM date) AS Year_month,
+  EXTRACT(YEAR FROM date) AS Year,
+  FORMAT_DATE("%A", date) as Week_Full_Week,
+  FORMAT_DATE("%B", date) as Month_Full_Week,
+  EXTRACT(QUARTER FROM date) AS year_Qtr,
+  EXTRACT(month from date_add(date, interval (12-4)+1 month)) as Fiscal_Month,
+  case when EXTRACT(MONTH FROM  date)>=4 then EXTRACT(YEAR FROM  date)
+  ELSE EXTRACT(YEAR FROM  date)-1
+  END As FISCAL_YEAR,
+  DATE_ADD(date, INTERVAL 100 YEAR) AS After_hun_yrs,
+  DATE_SUB(date, INTERVAL 100 YEAR) AS Before_hun_yrs,
+  FORMAT_DATE("%Y/%B",date) AS Yearmonth,
+  FORMAT_DATE("%Y%m", date) as Y_m,
+  FORMAT_DATE("%y%b%d",date) AS Full_date1,
+FROM UNNEST(GENERATE_DATE_ARRAY('2023-01-01', '2023-03-31')) AS date 
+ORDER BY Date;
+
+
+
+SELECT
+Cust_name as c,
+dealer_number d,
+
+FROM
+  `qwiklabs-gcp-03-a688fdcac3ef.BITest1.customer` as c
+LEFT OUTER JOIN
+  `qwiklabs-gcp-03-a688fdcac3ef.BITest1.sales` as s
+ON
+  c.Cust_id=s.Cust_id;
+
+
+____________________________
+
